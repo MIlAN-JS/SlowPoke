@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# environment variables
+.env
+
+# logs
+*.log
+
+# build output
+dist
+build
+
+# coverage
+coverage
+
+# caches
+.cache
+.parcel-cache
+
+# OS files
+.DS_Store
