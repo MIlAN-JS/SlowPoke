@@ -7,11 +7,13 @@ const userSchema = new mongoose.Schema({
     },
     email : {
         type : String, 
-        required : [true , "email required"]
+        required : [true , "email required"], 
+        unique : [true, "email must be unique"]
     },
     password : {
         type : String, 
-        required : [true , "password required"]
+        required : [true , "password required"],
+        select : false
     },
     avatar : {
         type : String, 
@@ -24,6 +26,11 @@ const userSchema = new mongoose.Schema({
     coverImg : {
         type: String, 
         default: ""
+    }, 
+    verified : {
+        type : Boolean,
+        default : false
+        
     }
 
 }, {timestamps : true})
