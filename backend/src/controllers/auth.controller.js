@@ -1,3 +1,5 @@
+import dotenv from "dotenv"
+dotenv.config()
 import userModel from "../models/user.model.js";
 import sendEmail from "../services/email.service.js";
 import jwt from "jsonwebtoken";
@@ -78,5 +80,54 @@ const verifyEmailController = async(req , res , next)=>{
     }
 }
 
+const loginController = async(req , res ,next)=>{
 
-export { registerUserController, verifyEmailController };
+    const {email , password} = req.body
+
+
+    try {
+
+        const user = await userModel.findOne({email}).select("+password ")
+
+        if(!user){
+            const error = new Error("Cannot find user")
+            error.status = 400
+            throw error
+            return 
+        }
+
+        const isPassTrue = await user.checkPassword(password)
+
+        if(!isPassTrue){
+
+            const error = new Error("Invalid password")
+            error.status = 400
+            throw error
+
+        }
+
+        const token = jwt.sign({
+            id : user._id 
+        } , process.env.JWT_SECRET , {expiresIn : '1d'})
+
+        res.cookie("token", token)
+
+        res.status(200).json({
+            message : "login success", 
+            user : user, 
+            success : true
+        })
+
+        
+        
+        
+    } catch (error) {
+console.log(error)
+        next(error)
+        
+    }
+
+}
+
+
+export { registerUserController, verifyEmailController , loginController };

@@ -26,4 +26,12 @@
         
     ]
 
-    export default registerValidator
+    const loginValidator = [
+
+        body("email").isEmail().withMessage("valid email is required"),
+        body("password").notEmpty().withMessage("password is required"),    
+        validateFunc    
+
+    ]
+
+    export  {registerValidator, loginValidator}
