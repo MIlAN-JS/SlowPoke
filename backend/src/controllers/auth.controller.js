@@ -129,5 +129,33 @@ console.log(error)
 
 }
 
+const getUserController = async(req ,res , next)=>{
+    try {
 
-export { registerUserController, verifyEmailController , loginController };
+        const userId = req.userId
+
+        const user = await userModel.findById(userId)
+
+        if(!user){
+           return  res.status(400).json({
+                message : "user not found",
+                success : false
+            })
+        }
+        
+        res.status(200).json({
+
+            message : "user found", 
+            user
+
+        })
+
+    } catch (error) {
+        console.log("error", error)
+        next(error)
+        
+    }
+}
+
+
+export { registerUserController, verifyEmailController , loginController, getUserController };
