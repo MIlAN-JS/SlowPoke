@@ -33,7 +33,7 @@ const likePostController = async(req , res , next)=>{
         const userId = req.userId
 
         const post = await postModel.findById(postId)
-      
+        
         if(!post){
             const error = new Error("Post not found")
             error.status = 404
@@ -60,5 +60,37 @@ const likePostController = async(req , res , next)=>{
 }
 
 
+const getPostController = async(req ,res,next)=>{
+    try {
+        const userId = req.userId
+        // const posts = await Promise.all( await postModel.find({}).populate("user").lean().map(async(post)=>{
 
-export { createPostController , likePostController}
+        //     const isPostLiked = await likeModel.findOne({post : post._id , user : userId})
+            
+        //     post.isLiked = Boolean(isPostLiked)
+        //     return post
+        // }))
+
+        let posts = await postModel.find({}).populate("user").lean()
+
+       let result  = await Promise.all(posts.map(async(post)=>{
+            const isPostLiked = await likeModel.findOne({post : post._id , user : userId})
+            post.isLiked = Boolean(isPostLiked)
+            return post
+        }))
+
+        res.status(201).json({
+            message : "posts fetched successfully", 
+            result,
+            success : true
+        })
+        
+    } catch (error) {
+        console.log(error)
+        next(error)
+        
+    }
+}
+
+
+export { createPostController , likePostController, getPostController}
