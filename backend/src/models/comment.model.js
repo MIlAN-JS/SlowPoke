@@ -18,6 +18,7 @@ const commentSchema = new mongoose.Schema({
 
 
 
+commentSchema.index({post: 1 , user : 1})
 
 const commentModel = mongoose.model("comment", commentSchema);
 

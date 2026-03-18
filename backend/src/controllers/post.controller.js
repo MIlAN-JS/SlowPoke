@@ -76,7 +76,10 @@ const getPostController = async(req ,res,next)=>{
 
        let result  = await Promise.all(posts.map(async(post)=>{
             const isPostLiked = await likeModel.findOne({post : post._id , user : userId})
+            const comments = await commentModel.find({post: post._id , user:userId})
+            console.log(comments)
             post.isLiked = Boolean(isPostLiked)
+            post.comments = comments
             return post
         }))
 
@@ -123,6 +126,7 @@ const writeCommentController = async(req , res, next)=>{
         
     }
 }
+
 
 
 export { createPostController , likePostController, getPostController , writeCommentController}
