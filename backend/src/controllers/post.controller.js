@@ -1,3 +1,4 @@
+import commentModel from "../models/comment.model.js";
 import likeModel from "../models/like.model.js";
 import postModel from "../models/post.model.js";
 import { uploadFile } from "../services/imagekit.service.js";
@@ -92,5 +93,36 @@ const getPostController = async(req ,res,next)=>{
     }
 }
 
+const writeCommentController = async(req , res, next)=>{
+    try {
 
-export { createPostController , likePostController, getPostController}
+     const postId = req.params.postId
+     const userId = req.userId
+     const {comment} = req.body
+
+     const post = await postModel.findById(postId); 
+
+     if(!post){
+        const error = new Error("Post doesnt exist")
+        error.status = 400; 
+        throw error
+     }
+
+      const commentResposnse = await commentModel.create({post: postId , user :userId, comment});
+
+      res.status(201).json({
+        message : "commented success",  
+        success : true, 
+        commentResposnse
+      })
+    
+
+        
+    } catch (error) {
+        next(error)
+        
+    }
+}
+
+
+export { createPostController , likePostController, getPostController , writeCommentController}
