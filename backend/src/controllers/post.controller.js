@@ -72,7 +72,7 @@ const getPostController = async(req ,res,next)=>{
         //     return post
         // }))
 
-        let posts = await postModel.find({}).populate("user").lean()
+        let posts = await postModel.find({}).populate("user").populate("totalLikes").lean()
 
        let result  = await Promise.all(posts.map(async(post)=>{
             const isPostLiked = await likeModel.findOne({post : post._id , user : userId})

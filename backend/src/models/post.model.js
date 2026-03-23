@@ -21,6 +21,13 @@ const postSchema = new mongoose.Schema({
 }, {timestamps : true })
 
 
+postSchema.virtual("totalLikes",    {
+   ref : "like", 
+   localField : "_id", 
+   foreignField : "post", 
+   count :  true
+})
+
 
 
 
