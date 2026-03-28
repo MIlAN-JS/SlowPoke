@@ -6,6 +6,8 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 import { Link } from "react-router";
+import useAuth from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
 
 export default function LoginComp() {
   
@@ -14,6 +16,7 @@ export default function LoginComp() {
   const [emailError, setEmailError] = useState(false);
 
   const isLoginEnabled =  email.length > 0 && password.length > 0;
+ const {handleLogin} = useAuth()
 
   const handleEmailBlur = () => {
     if (email.length > 0 && !email.includes("@")) {
@@ -30,12 +33,25 @@ export default function LoginComp() {
     }
   };
 
+  const user = useSelector(state => state.auth.user)
+  console.log(user)
+
+  
+  const handleSubmit = async(e)=>{
+    e.preventDefault()
+    await handleLogin({email, password})
+    
+  }
+
+  
+
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
       style={{ backgroundColor: "#0d1f26" }}
     >
-      <div
+      <form
+      onSubmit={handleSubmit}
         className="w-full max-w-md rounded-2xl p-10 shadow-2xl"
         style={{ backgroundColor: "#0f2330" }}
       >
@@ -68,16 +84,6 @@ export default function LoginComp() {
             <span className="text-white text-sm">Facebook</span>
           </button>
 
-          {/* SSO */}
-          <button className="flex flex-col items-center gap-1 group">
-            <div
-              className="w-12 h-12 rounded-full flex items-center justify-center border border-gray-600 transition-all duration-200 group-hover:border-gray-400 group-hover:bg-white/10"
-              style={{ backgroundColor: "#1a2f3e" }}
-            >
-              <FaKey className="text-white text-xl" />
-            </div>
-            <span className="text-white text-sm">SSO</span>
-          </button>
         </div>
 
         {/* Divider */}
@@ -138,6 +144,7 @@ export default function LoginComp() {
             Forgot Password?
           </a>
           <button
+          type="submit"
             disabled={!isLoginEnabled}
             className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
               isLoginEnabled
@@ -177,7 +184,7 @@ export default function LoginComp() {
             Privacy Policy.
           </a>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

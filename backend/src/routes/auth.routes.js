@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken"
 authRouter.post("/register", registerValidator,  registerUserController );
 authRouter.get("/verify-email", verifyEmailController)
 authRouter.post("/login",loginValidator, loginController )
-authRouter.get("/getUser", checkUser , getUserController)
+authRouter.get("/get-user", checkUser , getUserController)
 authRouter.post("/logout", checkUser , logoutController)
 
 

@@ -1,24 +1,25 @@
 import { useDispatch } from "react-redux";
-import { loginUser, registerUser } from "../services/auth.services";
+import { getUser, loginUser, registerUser } from "../services/auth.services";
 import { setLoading , setUser, setError  } from "../state/authSlice";
 
 
 const useAuth = ()=>{
 
-  const disPatch = useDispatch()
+  const dispatch = useDispatch()
 
   const handleRegister = async({email , password , userName})=>{
 
     try {
 
-
+       dispatch(setLoading(true))
         const data = await registerUser({email, password , userName})
-        console.log(data)
-        setUser(data.user)
+        dispatch(setUser(data.user))
         
     } catch (error) {
         setError(error)
         console.log(error , "error while regiser")
+    }finally{
+        dispatch(setLoading(false))
     }
 
   }
@@ -26,21 +27,41 @@ const useAuth = ()=>{
 
     try {
 
-
+        dispatch(setLoading(true))
         const data = await loginUser({email, password })
-        console.log(data)
-        setUser(data.user)
+        dispatch(setUser(data.user))
         
     } catch (error) {
-        setError(error)
+       dispatch(setError(error))
         console.log(error , "error while login")
+    }finally{
+        dispatch(setLoading(false))
+    }
+
+  }
+
+  const handleGetUser = async()=>{ 
+
+    try {
+
+        dispatch(setLoading(true))
+        const data = await getUser()
+        dispatch(setUser(data.user))
+        
+    } catch (error) {
+       dispatch(setError(error))
+        console.log(error , "error while getting user")
+    }finally{
+        dispatch(setLoading(false))
     }
 
   }
   
 
   return {
-    handleRegister
+    handleRegister,
+    handleLogin,
+    handleGetUser
   }
 
 }

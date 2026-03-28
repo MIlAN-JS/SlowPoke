@@ -21,11 +21,11 @@ export default function RegisterComp() {
     const {handleRegister} = useAuth()
 
 
-  const handleSubmit = async(e)=>{
-    e.preventDefault()
-    await handleRegister({email, password, userName})
-    
-  }
+    const handleSubmit = async(e)=>{
+      e.preventDefault()
+      await handleRegister({email, password, userName})
+      
+    }
 
 
 
