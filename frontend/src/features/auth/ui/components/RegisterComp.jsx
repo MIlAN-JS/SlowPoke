@@ -18,7 +18,7 @@ export default function RegisterComp() {
 
 //   const [emailError] = useState(true); // static error state as shown in image
   const isLoginEnabled = userName.length > 0 && email.length > 0 && password.length > 0;
-    const {handleRegister} = useAuth()
+    const {handleRegister , handleOauth} = useAuth()
 
 
     const handleSubmit = async(e)=>{
@@ -26,12 +26,6 @@ export default function RegisterComp() {
       await handleRegister({email, password, userName})
       
     }
-
-
-
-
-
-
 
 
   return (
@@ -52,7 +46,11 @@ export default function RegisterComp() {
         {/* Social Login */}
         <div className="flex justify-center gap-10 mb-6">
           {/* Google */}
-          <button className="flex flex-col items-center gap-1 group">
+          <button 
+          onClick={()=>{
+              handleOauth()
+          }}
+          className="flex flex-col items-center gap-1 group">
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center border border-gray-600 transition-all duration-200 group-hover:border-gray-400 group-hover:bg-white/10"
               style={{ backgroundColor: "#1a2f3e" }}

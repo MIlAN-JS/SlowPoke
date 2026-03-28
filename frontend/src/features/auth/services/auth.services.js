@@ -38,10 +38,11 @@ const loginUser = async({email , password})=>{
     }
 }
 
-const OauthLogin = async()=>{
+const OauthLogin = ()=>{
     try {
-
-        return oauth.data
+    
+         window.location.href = "http://localhost:3000/api/auth/google"
+         
     } catch (error) {
         console.log("canot login with Oauth", error)
         return error

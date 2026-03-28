@@ -202,7 +202,7 @@ const logoutController = async(req , res ,next)=>{
 
 const GoogleOauthController = async (req, res) => {
   try {
-    const profile = req.profile;
+    const profile = req.user;
 
     const email = profile.emails[0].value;
 

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { getUser, loginUser, registerUser } from "../services/auth.services";
+import { getUser, loginUser, OauthLogin, registerUser } from "../services/auth.services";
 import { setLoading , setUser, setError  } from "../state/authSlice";
 
 
@@ -56,12 +56,23 @@ const useAuth = ()=>{
     }
 
   }
+
+  const handleOauth = ()=>{
+    try {
+
+      OauthLogin()
+      
+    } catch (error) {
+      dispatch(setError(error))
+    }
+  }
   
 
   return {
     handleRegister,
     handleLogin,
-    handleGetUser
+    handleGetUser, 
+    handleOauth
   }
 
 }
