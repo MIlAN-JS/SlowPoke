@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
+import Loading from "../../../../components/LoadingPage/Loading";
 
 export default function LoginComp() {
   
@@ -17,6 +18,7 @@ export default function LoginComp() {
 
   const isLoginEnabled =  email.length > 0 && password.length > 0;
  const {handleLogin} = useAuth()
+ const loading = useSelector(state => state.auth.loading)
 
   const handleEmailBlur = () => {
     if (email.length > 0 && !email.includes("@")) {
@@ -46,6 +48,9 @@ export default function LoginComp() {
   
 
   return (
+
+
+   loading ? <Loading/> : 
     <div
       className="min-h-screen flex items-center justify-center px-4"
       style={{ backgroundColor: "#0d1f26" }}
