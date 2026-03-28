@@ -3,7 +3,7 @@ dotenv.config()
 import userModel from "../models/user.model.js";
 import sendEmail from "../services/email.service.js";
 import jwt from "jsonwebtoken";
-
+import redis from "../config/redis.js";
 
 const registerUserController = async (req, res, next) => {
 
@@ -157,5 +157,47 @@ const getUserController = async(req ,res , next)=>{
     }
 }
 
+const logoutController = async(req , res ,next)=>{
+    try {
+        
+        const userId = req.userId
 
-export { registerUserController, verifyEmailController , loginController, getUserController };
+        // check if user exist 
+        const user = await userModel.findById(userId)
+        if(!user){
+            return res.status(400).json({
+                message : "Cannot find user", 
+                success : false
+            })
+        }
+
+        // fetch the token 
+
+        const token = req.cookies.token
+
+        // blacklisting the token :} STORING TOKEN IN REDDIS DATABASE
+
+        await redis.set("userToken" , token, "EX"  , 60*60)
+
+        // deleting token from frontend
+
+        res.clearCookie("token")
+
+
+        res.status(200).json({
+            message : "logout success", 
+            success : true
+        })
+        
+
+
+    } catch (error) {
+         console.log(error , "logout error ")
+        next(error)
+       
+        
+    }
+}
+
+
+export { registerUserController, verifyEmailController , loginController, getUserController , logoutController };
