@@ -200,23 +200,54 @@ const logoutController = async(req , res ,next)=>{
 }
 
 
-const GoogleOauthController = async(req ,res)=>{
-    try {
-        
-        const token = jwt.sign({id : req.user.id}, process.env.JWT_SECRET)
-       
-        res.cookie("token", token)
-        res.status(201).json({
-            user : req.user
-        })
-        
+const GoogleOauthController = async (req, res) => {
+  try {
+    const profile = req.profile;
 
-    
+    const email = profile.emails[0].value;
 
-    } catch (error) {
-        
-        console.log('cannot login withgoogle ', error )
+    // 1. Find user by email
+    let user = await userModel.findOne({ email });
+
+    // 2. If user exists
+    if (user) {
+      // link googleId if not already linked
+      if (!user.googleId) {
+        user.googleId = profile.id;
+        await user.save();
+      }
+    } 
+    else {
+      // 3. Create new user
+      user = await userModel.create({
+        userName: profile.displayName,
+        email: email,
+        googleId: profile.id,
+        provider: "google",
+        avatar: profile.photos?.[0]?.value
+      });
     }
-}
+
+    // 4. Generate JWT
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    // 5. Send cookie
+    res.cookie("token", token, {
+      httpOnly: true
+    });
+
+    // 6. redirect to feed 
+    res.redirect("http://localhost:5173/feed")
+
+  } catch (error) {
+    console.log("cannot login with google", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 
 export { registerUserController, verifyEmailController , loginController, getUserController , logoutController , GoogleOauthController };

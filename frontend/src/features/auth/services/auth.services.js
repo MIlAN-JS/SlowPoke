@@ -41,7 +41,6 @@ const loginUser = async({email , password})=>{
 const OauthLogin = async()=>{
     try {
 
-        const  oauth = await api.get("/google") 
         return oauth.data
     } catch (error) {
         console.log("canot login with Oauth", error)
