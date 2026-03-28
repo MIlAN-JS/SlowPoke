@@ -5,14 +5,15 @@ import {
   FaKey,
   FaExclamationCircle,
 } from "react-icons/fa";
+import { Link } from "react-router";
 
-export default function LoginComponent() {
-  const [userName, setUserName] = useState("");
+export default function LoginComp() {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
 
-  const isLoginEnabled = userName.length > 0 && email.length > 0 && password.length > 0;
+  const isLoginEnabled =  email.length > 0 && password.length > 0;
 
   const handleEmailBlur = () => {
     if (email.length > 0 && !email.includes("@")) {
@@ -40,7 +41,7 @@ export default function LoginComponent() {
       >
         {/* Title */}
         <h1 className="text-white text-3xl font-bold text-center mb-8 tracking-wide">
-          Sign in
+          Log in
         </h1>
 
         {/* Social Login */}
@@ -86,18 +87,6 @@ export default function LoginComponent() {
           <div className="flex-1 h-px bg-gray-600" />
         </div>
 
-        {/* Username Field */}
-        <div className="mb-4">
-          <label className="block text-white text-sm mb-1">Username:</label>
-          <input
-            type="text"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            className="w-full rounded-md px-3 py-2 text-white text-sm border border-gray-600 outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-150"
-            style={{ backgroundColor: "#1a2f3e" }}
-            placeholder=""
-          />
-        </div>
 
         {/* Email Field */}
         <div className="mb-4">
@@ -163,12 +152,12 @@ export default function LoginComponent() {
         {/* Sign Up */}
         <p className="text-center text-white text-sm mb-6">
           Don&apos;t have an account yet?{" "}
-          <a
-            href="#"
+          <Link
+            to="/register"
             className="text-blue-400 hover:text-blue-300 transition-colors duration-150"
           >
             Sign up
-          </a>
+          </Link>
         </p>
 
         {/* Footer Terms */}

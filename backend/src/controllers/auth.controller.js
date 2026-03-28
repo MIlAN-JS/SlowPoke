@@ -200,4 +200,23 @@ const logoutController = async(req , res ,next)=>{
 }
 
 
-export { registerUserController, verifyEmailController , loginController, getUserController , logoutController };
+const GoogleOauthController = async(req ,res)=>{
+    try {
+        
+        const token = jwt.sign({id : req.user.id}, process.env.JWT_SECRET)
+       
+        res.cookie("token", token)
+        res.status(201).json({
+            user : req.user
+        })
+        
+
+    
+
+    } catch (error) {
+        
+        console.log('cannot login withgoogle ', error )
+    }
+}
+
+export { registerUserController, verifyEmailController , loginController, getUserController , logoutController , GoogleOauthController };

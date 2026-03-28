@@ -5,20 +5,42 @@ import {
   FaKey,
   FaExclamationCircle,
 } from "react-icons/fa";
+import { Link } from "react-router";
+import useAuth from "../../hooks/useAuth";
 
 export default function RegisterComp() {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-//   const [emailError] = useState(true); // static error state as shown in image
+  const [userName , setUserName] = useState("");
 
-  const isLoginEnabled = email.length > 0 && password.length > 0;
+
+
+//   const [emailError] = useState(true); // static error state as shown in image
+  const isLoginEnabled = userName.length > 0 && email.length > 0 && password.length > 0;
+    const {handleRegister} = useAuth()
+
+
+  const handleSubmit = async(e)=>{
+    e.preventDefault()
+    await handleRegister({email, password, userName})
+    
+  }
+
+
+
+
+
+
+
 
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
       style={{ backgroundColor: "#0d1f26" }}
     >
-      <div
+      <form
+      onSubmit={handleSubmit}
         className="w-full max-w-md rounded-2xl p-10 shadow-2xl"
         style={{ backgroundColor: "#0f2330" }}
       >
@@ -60,6 +82,21 @@ export default function RegisterComp() {
           <div className="flex-1 h-px bg-gray-600" />
           <span className="text-gray-400 text-sm">Or</span>
           <div className="flex-1 h-px bg-gray-600" />
+        </div>
+
+
+        {/* Username Field */}
+       
+         <div className="mb-4">
+          <label className="block text-white text-sm mb-1">Username:</label>
+          <input
+            type="text"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            className="w-full rounded-md px-3 py-2 text-white text-sm border border-gray-600 outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-150"
+            style={{ backgroundColor: "#1a2f3e" }}
+            placeholder=""
+          />
         </div>
 
         {/* Email Field */}
@@ -108,6 +145,7 @@ export default function RegisterComp() {
           </a>
           <button
             disabled={!isLoginEnabled}
+            type="submit"
             className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
               isLoginEnabled
                 ? "bg-gray-500 hover:bg-gray-400 text-white cursor-pointer"
@@ -120,13 +158,13 @@ export default function RegisterComp() {
 
         {/* Sign Up */}
         <p className="text-center text-white text-sm mb-6">
-          Don&apos;t have an account yet?{" "}
-          <a
-            href="#"
+          Already have an account {" "}
+          <Link
+            to="/login"
             className="text-blue-400 hover:text-blue-300 transition-colors duration-150"
           >
             Sign up
-          </a>
+          </Link>
         </p>
 
         {/* Footer Terms */}
@@ -146,7 +184,7 @@ export default function RegisterComp() {
             Privacy Policy.
           </a>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

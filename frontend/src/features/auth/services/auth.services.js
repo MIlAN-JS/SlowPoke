@@ -7,11 +7,11 @@ const api = axios.create({
 
 
 
-const registerUser = async({email , password , fullName , confirmPassword , gender })=>{
+const registerUser = async({email , password , userName })=>{
 
     try {
 
-        const response = await api.post("/register", {emaili , password , fullName , confirmPassword , gender} )
+        const response = await api.post("/register", {email , password , userName} )
 
         return response.data
         
@@ -23,8 +23,37 @@ const registerUser = async({email , password , fullName , confirmPassword , gend
 
 }
 
+const loginUser = async({email , password})=>{
+    try {
+
+        const response = await api.post("/login",{email, password})
+        return response.data
+        
+    } catch (error) {
+       
+        console.log("cannot login user", error)
+
+        return error
+        
+    }
+}
+
+const OauthLogin = async()=>{
+    try {
+
+        const  oauth = await api.get("/google") 
+        return oauth.data
+    } catch (error) {
+        console.log("canot login with Oauth", error)
+        return error
+        
+    }
+}
+
 
 
 export {
-    registerUser
+    registerUser, 
+    loginUser, 
+    OauthLogin
 }
