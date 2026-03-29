@@ -51,17 +51,13 @@ const OauthLogin = ()=>{
 }
 
 const getUser = async()=>{
-    try {
+
 
         const response = await api.get("/get-user")
         return response.data
         
-    } catch (error) {
+
        
-        console.log("cannot get user", error)
-        return error
-        
-    }
 }
 
 

@@ -13,7 +13,7 @@ const Register = () => {
     </div> */}
 
       {loading ? <Loading/> :   <RegisterComp/>}
-      
+    
       </section>
   )
 }

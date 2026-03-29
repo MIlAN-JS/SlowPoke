@@ -49,13 +49,19 @@ const useAuth = ()=>{
         dispatch(setUser(data.user))
         
     } catch (error) {
-       dispatch(setError(error))
-        console.log(error , "error while getting user")
+
+   
+       dispatch(setError({
+        message : error?.response?.data?.message,
+        success : error?.response?.data?.success
+       }))
+      
     }finally{
         dispatch(setLoading(false))
     }
 
   }
+
 
   const handleOauth = ()=>{
     try {

@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import Loading from "../../../../components/LoadingPage/Loading";
 
 export default function LoginComp() {
+  console.log("first")
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -190,6 +191,6 @@ export default function LoginComp() {
           </a>
         </p>
       </form>
-    </div>
+    </div> 
   );
 }
